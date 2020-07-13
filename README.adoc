@@ -1,0 +1,22 @@
+= Proof of Concept for federated, connected eID System for iOS
+
+== Actors, Domains and Deep Links
+
+=== Acme Administration
+    acme.spilikin.dev
+    id.acme.spilikin.dev
+    appauth.acme.spilikin.dev
+
+=== Foo Insurances
+    foo.spilikin.dev
+    id.foo.spilikin.dev
+    appauth.foo.spilikin.dev
+
+=== Bar Benefitial
+    bar.spilikin.dev
+    id.bar.spilikin.dev
+    appauth.bar.spilikin.dev
+
+=== Qux Medical
+    qux.spilikin.dev
+

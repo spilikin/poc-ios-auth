@@ -1,0 +1,10 @@
+
+.Create Docker image
+---
+docker build . -t healthid
+---
+
+.Run Docker image
+---
+docker run -it -p 80:80 --rm healthid 
+---
