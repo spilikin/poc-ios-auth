@@ -1,7 +1,15 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+import os
 
-app = FastAPI()
+API_VERSION = '0.2.0'
+
+api = FastAPI(
+    title=f"HealthID API v{API_VERSION}",
+    openapi_url="/api/v1/openapi.json"
+)
 
 fake_db = {
     '99775533@healthid.life': {
@@ -10,15 +18,30 @@ fake_db = {
     }
 }
 
-@app.get('/info')
+
+
+if "API_ENV" in os.environ and os.environ['API_ENV'] == 'DOCKER':
+    vue_dir = "./vue/"
+else:
+    vue_dir = "../vue/dist/"
+
+api.mount("/ui", StaticFiles(directory=vue_dir), name="static")
+
+@api.get('/SignIn')
+def ui_signin():
+    response = RedirectResponse(url='/ui/SignIn.html')
+    return response
+
+@api.get('/info')
 def public_info():
     return {
         'description':'HealthID API',
-        'version':'1.0'
+        'version':f'{API_VERSION}'
     }
 
-@app.get('/acc/{acc}/')
+@api.get('/acc/{acc}/')
 def get_account(acc: str):
+    if not acc in fake_db:
+        raise HTTPException(status_code=404, detail="Account not found")
     account = fake_db[acc]
-    unless
-    raise HTTPException(status_code=404, detail="Account not found")
+    return account

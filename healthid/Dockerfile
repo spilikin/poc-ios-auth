@@ -3,6 +3,12 @@ COPY vue /app
 WORKDIR /app
 RUN yarn build
 
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-alpine3.10
+COPY ./api /app
+COPY --from=build /app/dist /app/vue
+WORKDIR /app
+RUN /usr/local/bin/python -m pip install --upgrade pip
+RUN pip install -r ./requirements.txt
+ENV API_ENV DOCKER
+CMD ["uvicorn", "healthid:api", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8000

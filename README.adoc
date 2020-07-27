@@ -26,13 +26,14 @@
 ---
 cd healthid/api
 source venv.sh
-uvicorn healthid:app --reload
+uvicorn healthid:api --reload
 ---
 
 .Start UI Server
 ---
 cd healthid/vue
 yarn serve
+open http://127.0.0.1:8080/ui/SignIn.html
 ---
 
 
