@@ -1,6 +1,7 @@
 FROM node:alpine as vue-build
 COPY vue /app
 WORKDIR /app
+RUN yarn install
 RUN yarn build
 
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-alpine3.10
