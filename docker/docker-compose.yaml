@@ -28,6 +28,12 @@ services:
     networks:
       - backnet
 
+  healthid:
+    build:
+      context: ../healthid/
+    networks:
+      - backnet
+  
 networks:
     backnet:
         driver: bridge

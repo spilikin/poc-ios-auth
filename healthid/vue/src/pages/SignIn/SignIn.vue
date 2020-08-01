@@ -6,6 +6,9 @@
     <img v-else class="logo" alt="HealthID" src="@/assets/logo.png">
     <div class="form-signin">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <b-alert :show="error != ''" variant="danger" dismissible>
+      {{ error }}
+      </b-alert>
       <div v-if="state == 'account'">
         <label for="inputEmail" class="sr-only">Email address</label>
         <input v-model="account" type="email" id="account" class="form-control" placeholder="Enter your HealthID" required autofocus>
@@ -19,7 +22,7 @@
       <div v-if="state == 'authenticate'">
         <b-button @click="onAuthenticateViaApp" block variant="outline-primary"><b-icon icon="phone"></b-icon> Authenticate via App </b-button>
         <b-button @click="onShowCode" block variant="secondary"><b-icon icon="upc-scan"></b-icon> Scan SignIn Code</b-button>
-        <a id="cancel" href="/SignIn">Cancel</a>
+        <a id="cancel" href="/SignIn/">Cancel</a>
       </div>
       <p class="mt-5 mb-3 text-muted">No password. No PIN. No cry.<br>
       <small>API Version {{ apiInfo }}</small>
@@ -46,16 +49,23 @@ export default class SignIn extends Vue {
   state = "account"
   showCode = false
   apiInfo = "unknown"
+  error = ""
 
   mounted() {
     this.account = localStorage.getItem("account") || ""
     this.remember = localStorage.getItem("account") != null
-    axios.get("/info")
+    axios.get("/api/info")
       .then(response => (this.apiInfo = response.data.version))
+      .catch(reason => {
+        console.debug(reason)
+        this.error = reason
+      })
 
   }
 
-  onCheckAccount(event: Event): void {
+  onCheckAccount(
+
+  ): void {
     console.log('Signin: '+this.account)
     if (this.remember) {
       localStorage.setItem("account", this.account)

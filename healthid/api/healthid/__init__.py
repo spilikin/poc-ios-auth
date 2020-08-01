@@ -1,1 +1,1 @@
-from healthid.main import api
+from healthid.main import app

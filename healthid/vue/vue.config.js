@@ -1,15 +1,16 @@
 module.exports = {
-/*    publicPath: "/ui",*/
     devServer: {
         proxy: 'http://localhost:8000'
     },
     pages: {
         SignIn: {
-            entry: 'src/pages/SignIn/page.ts',
+            title: "HealthID Sign In",
+            entry: 'src/pages/SignIn/SignIn.ts',
             template: 'templates/index.html',
         },
         Account: {
-            entry: 'src/pages/Account/page.ts',
+            title: "HealthID Account",
+            entry: 'src/pages/Account/Account.ts',
             template: 'templates/index.html',
         }
     }

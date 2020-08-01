@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Page from './SignIn.vue'
-import store from '../../store'
 
 Vue.config.productionTip = false
 
