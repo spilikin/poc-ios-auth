@@ -23,29 +23,29 @@
 == Running locally
 
 .Start HealthID API Server
----
+----
 cd healthid/api
 source venv.sh
 uvicorn healthid:app --reload
 open http://127.0.0.1:8000/api/docs
----
+----
 
 .Start UI Server
----
+----
 cd healthid/vue
 yarn serve
 open http://127.0.0.1:8080/SignIn
----
+----
 
 
 .Create Docker image
----
+----
 cd healthid
 docker build . -t healthid
----
+----
 
 .Run Docker image
----
+----
 cd healthid
 docker run -it -p 80:80 --rm healthid 
----
+----
