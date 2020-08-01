@@ -12,8 +12,8 @@ services:
         - ../.certbot/www:/var/www/certbot
         - ./frontgate/conf.d:/etc/nginx/conf.d
         # Backgates
-        - ./acme/www:/var/www/acme
-        - ./appauth.acme/www:/var/www/appauth.acme
+        - ./frontgate/acme/www:/var/www/acme
+        - ./frontgate/appauth.acme/www:/var/www/appauth.acme
     ports:
       - "80:80"
       - "443:443"
@@ -30,7 +30,7 @@ services:
 
   healthid:
     build:
-      context: ../healthid/
+      context: ./
     networks:
       - backnet
   
