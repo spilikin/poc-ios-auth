@@ -27,7 +27,8 @@
 cd healthid/api
 source venv.sh
 uvicorn healthid:app --reload
-open http://127.0.0.1:8000/api/docs
+open http://localhost:8000/api/docs
+http 'localhost:8000/api/auth/challenge?acct=99775533@healthid.life'
 ----
 
 .Start UI Server
@@ -48,4 +49,15 @@ docker build . -t healthid
 ----
 cd healthid
 docker run -it -p 80:80 --rm healthid 
+----
+
+== Creating EC Key Pairs
+
+
+[bash]
+----
+# create private key
+openssl ecparam -genkey -name prime256v1 -noout -out private.pem
+# generate public key
+openssl ec -in private.pem -pubout -out public.pem
 ----

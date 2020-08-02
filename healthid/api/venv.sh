@@ -6,9 +6,9 @@ if [ ! -f ./requirements.txt ]
 fi
 if [ ! -f ./.virtualenv/bin/activate ]
     then
-        pip install virtualenv 2> /dev/null
-        python3 -m virtualenv --python=python3.7 ./.virtualenv
+        pip3 install virtualenv 
+        python3 -m virtualenv --python=python3.8 ./.virtualenv
 fi
 echo Activating virtualenv
 source ./.virtualenv/bin/activate
-pip install -r ./requirements.txt
+pip3 install -r ./requirements.txt
