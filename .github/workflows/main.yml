@@ -39,5 +39,5 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           cd healthid/
-          sudo docker-compose up --build
+          sudo docker-compose up --build --detach
 
