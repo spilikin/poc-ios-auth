@@ -10,6 +10,8 @@ import healthid.db as db
 import healthid.security as security
 from pydantic import BaseModel
 from uuid import uuid4
+import urllib.parse
+
 
 class EnrollmentRequest(BaseModel):
     acct: str
@@ -30,7 +32,7 @@ class Challenge(BaseModel):
     exp: int
     acct: str
 
-API_VERSION = '0.5.0'
+API_VERSION = '0.6.0'
 
 api = FastAPI(
     title=f"HealthID API",
@@ -66,7 +68,7 @@ def enroll(req: EnrollmentRequest):
     return account
 
 @api.get('/auth/challenge')
-def get_challenge(acct: str):
+def get_challenge(acct: str, redirect_url: Optional[str] = None):
     db.challenges.remove(db.where('exp') < time.time())
     challenge = { 
         'exp': int(time.time())+300,
@@ -74,4 +76,11 @@ def get_challenge(acct: str):
         'nonce': secrets.token_hex(32) 
     }
     db.challenges.insert(challenge)
-    return challenge
+    print (redirect_url)
+    if redirect_url:
+        url = redirect_url
+        url += "?acct="+acct
+        url += "&nonce="+challenge['nonce']
+        return RedirectResponse(url)
+    else:
+        return challenge
