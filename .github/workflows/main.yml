@@ -24,6 +24,7 @@ jobs:
           cd healthid/
           sudo docker-compose down
           sudo docker image prune --force
+          sudo docker system prune --force
     - name: Copy to AWS 
       uses: appleboy/scp-action@master
       with:
