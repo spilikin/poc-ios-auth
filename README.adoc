@@ -61,3 +61,18 @@ openssl ecparam -genkey -name prime256v1 -noout -out private.pem
 # generate public key
 openssl ec -in private.pem -pubout -out public.pem
 ----
+
+== Test the API
+
+[bash]
+----
+# get challenge and redirect to Login-QR-Code page
+http localhost:8000/api/auth/challenge acct==99775533@healthid.life redirect_uri==https://acme.spilikin.dev/ remote_auth_uri==https://appauth.acme.spilikin.dev/SignIn/Authenticate
+# get challenge 
+http localhost:8000/api/auth/challenge acct==99775533@healthid.life redirect_uri==https://acme.spilikin.dev/ 
+
+
+http POST localhost:8000/api/auth/challenge acct=99775533@healthid.life alg="Unsigned" signature="" nonce=<nonce from previous request>
+http -f POST localhost:8000/api/auth/token grant_type=authorization_code client_id=public_client redirect_uri=http://acme.spilikin.dev/ code=<code from previous request>
+
+----

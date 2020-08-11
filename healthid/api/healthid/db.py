@@ -5,6 +5,7 @@ db = TinyDB('.db/db.json')
 
 accounts = db.table('account')
 challenges = db.table('challenge')
+codes = db.table('codes')
 
 challenges.truncate()
 

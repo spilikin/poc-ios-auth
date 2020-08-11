@@ -53,7 +53,8 @@ export default class Identity extends Vue {
     }
     url += "/api/auth/challenge"
     url += "?acct="+encodeURI(this.account)
-    url += "&redirect_url="+encodeURI(baseURL+"/SignIn/Authenticate")
+    url += "&redirect_uri="+encodeURI('https://acme.spilikin.dev/Account/')
+    url += "&remote_auth_uri="+encodeURI(baseURL+"/SignIn/Authenticate")
     window.location.href = url
   }
 
