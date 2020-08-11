@@ -23,6 +23,10 @@ templates = Jinja2Templates(directory=vue_dir)
 def signin(request: Request):
     return templates.TemplateResponse("SignIn.html", {"request": request})
 
+@app.get('/SignIn/{subpage}')
+def signin_subpage(request: Request, subpage: str):
+    return templates.TemplateResponse("SignIn.html", {"request": request})
+
 @app.get('/Account/{account_id}/')
 def account(request: Request, account_id: str):
     return templates.TemplateResponse("Account.html", {"request": request})

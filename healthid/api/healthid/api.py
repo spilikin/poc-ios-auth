@@ -16,6 +16,7 @@ from enum import Enum
 import base64
 import urllib
 
+API_VERSION = '0.8.0'
 
 app = FastAPI()
 
@@ -76,7 +77,6 @@ class TokenResponse(BaseModel):
     access_token: str
     
 
-API_VERSION = '0.6.0'
 
 api = FastAPI(
     title=f"HealthID API",
