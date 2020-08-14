@@ -26,8 +26,6 @@ class EnrollmentRequest(BaseModel):
 class SignedEnrollmentRequest(BaseModel):
     signed_enrollment: str # JWS signed EnrollmentRequest
     verifying_key: str # ECC verifying key in PEM format
-    alg: str # Signature algorithm
-
 
 def load_account(acct: str, remote_user: User):
     if acct == remote_user.acct:
@@ -54,15 +52,17 @@ def put_device(acct: str, device_slot: int, remote_user: User = Depends(get_remo
 @router.post('/enroll', response_model=Account)
 def enroll(req: SignedEnrollmentRequest):
     try:
-        payload = jws.verify(req.signed_enrollment, req.verifying_key, algorithms=req.alg)
+        payload = jws.verify(req.signed_enrollment, req.verifying_key, algorithms="ES256")
     except Exception as e:
         raise HTTPException(status_code=400, detail="Unable to verify JWS: "+str(e))
 
     enrollment_request = EnrollmentRequest(**json.loads(payload.decode('utf-8')))
 
     if len(db.accounts.search(db.where('acct') == enrollment_request.acct)) > 0:
-        #db.accounts.remove(db.where('acct') == enrollment_request.acct)
-        raise HTTPException(status_code=409, detail="Account already exists")
+        # TODO: WARNING: Just fo the sake of flawless test usage 
+        # everyone can override existing accounts!!!
+        db.accounts.remove(db.where('acct') == enrollment_request.acct)
+        #raise HTTPException(status_code=409, detail="Account already exists")
         
     account = Account(
         uuid = str(uuid4()),
