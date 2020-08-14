@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 endpoint = args.endpoint
 
-acct=sys.argv[1]
+acct=args.acct
 dir=f'./accounts/{acct}'
 
 if not os.path.exists(dir):

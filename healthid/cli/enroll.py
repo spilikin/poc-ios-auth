@@ -5,18 +5,22 @@ import os
 from ecdsa import SigningKey, BRAINPOOLP256r1
 import requests
 import json
+import argparse
 
-if len(sys.argv) < 2:
-    print("""Usage:
-    enroll.py <account email> [endpoint]
-    """)
-    exit(1)
+CLIENT_ID='public_client'
+REDIRECT_URI='http://localhost:8080/'
+ENDPOINT="http://localhost:8000/api/"
 
-endpoint="http://localhost:8000/api/"
-if len(sys.argv) >= 3:
-    endpoint = sys.argv[2]
 
-acct=sys.argv[1]
+parser = argparse.ArgumentParser(description='Authenticate and return the bearer token')
+parser.add_argument('acct', type=str, help='Account name')
+parser.add_argument("--verbose", "-v", help="increase output verbosity", action="store_true")
+parser.add_argument("--endpoint", "-e", help="specify different API endpoint", default=ENDPOINT)
+args = parser.parse_args()
+
+endpoint = args.endpoint
+
+acct=args.acct
 dir=f'./accounts/{acct}'
 os.makedirs(dir, exist_ok=True)
 
