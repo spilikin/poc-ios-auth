@@ -1,5 +1,58 @@
 = Proof of Concept for federated, connected eID System for iOS
 
+WARNING: This software is merely a *funtional* proof of concept. It supposed toi show the basic flows and integration options for clients, identity providers and relying parties.
+
+== Pre-Requisites
+
+
+I recommend using HTTPie (https://httpie.org) over curl 
+
+Install Python 3.8 (e.g. apt-egt or brew install)
+
+Install Docker (optional)
+
+== Use the public API
+
+See the API docs under https://acme.spilikin.dev/api/docs/
+
+[bash]
+----
+https acme.spilikin.dev/api/info 
+----
+
+.Enroll using the python client
+----
+cd healthid/cli
+source venv.sh
+ACCT=<test email address>
+# enroll 
+./enroll.py --endpoint https://acme.spilikin.dev/api/ $ACCT
+# see ECC key files
+ls -alR ./accounts/
+# verbose authentication
+./auth.py --verbose --endpoint https://acme.spilikin.dev/api/ $ACCT
+# get token to ENV variable
+TOKEN=`./auth.py --endpoint https://acme.spilikin.dev/api/ $ACCT`
+
+https "https://acme.spilikin.dev/api/acct/$ACCT" "Authorization:Bearer `./auth.py $ACCT --endpoint https://acme.spilikin.dev/api/`"
+# access protected resource
+
+----
+
+== Run API locally
+
+You will need Python 3.8 (install using apt-get oder brew install)
+
+.Start HealthID API Server
+----
+cd healthid/api
+source venv.sh
+uvicorn healthid:app --reload
+http localhost:8000/api/info 
+----
+
+
+
 == Actors, Domains and Deep Links
 
 === Acme Administration
@@ -22,15 +75,6 @@
 
 == Running locally
 
-.Start HealthID API Server
-----
-cd healthid/api
-source venv.sh
-uvicorn healthid:app --reload
-open http://localhost:8000/api/docs
-http 'localhost:8000/api/auth/challenge?acct=99775533@healthid.life'
-----
-
 .Start UI Server
 ----
 cd healthid/vue
@@ -49,30 +93,4 @@ docker build . -t healthid
 ----
 cd healthid
 docker run -it -p 80:80 --rm healthid 
-----
-
-== Creating EC Key Pairs
-
-
-[bash]
-----
-# create private key
-openssl ecparam -genkey -name prime256v1 -noout -out private.pem
-# generate public key
-openssl ec -in private.pem -pubout -out public.pem
-----
-
-== Test the API
-
-[bash]
-----
-# get challenge and redirect to Login-QR-Code page
-http localhost:8000/api/auth/challenge acct==99775533@healthid.life redirect_uri==https://acme.spilikin.dev/ remote_auth_uri==https://appauth.acme.spilikin.dev/SignIn/Authenticate
-# get challenge 
-http localhost:8000/api/auth/challenge acct==99775533@healthid.life redirect_uri==https://acme.spilikin.dev/ 
-
-
-http POST localhost:8000/api/auth/challenge acct=99775533@healthid.life alg="Unsigned" signature="" nonce=<nonce from previous request>
-http -f POST localhost:8000/api/auth/token grant_type=authorization_code client_id=public_client redirect_uri=http://acme.spilikin.dev/ code=<code from previous request>
-
 ----
