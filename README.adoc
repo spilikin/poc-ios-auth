@@ -15,7 +15,7 @@ Install Docker (optional)
 
 See the API docs under https://acme.spilikin.dev/api/docs/
 
-[bash]
+[source, bash]
 ----
 https acme.spilikin.dev/api/info 
 ----
