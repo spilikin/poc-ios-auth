@@ -8,6 +8,3 @@ challenges = db.table('challenge')
 codes = db.table('codes')
 auditlog = db.table('auditlog')
 
-if len(accounts) == 0:
-    create_testdata()
-
