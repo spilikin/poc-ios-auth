@@ -8,7 +8,7 @@ import logging
 loggar = logger = logging.getLogger(__name__)  
 
 ISSUER='https://id.acme.spilikin.dev/'
-TOKEN_VALIDITY_PERIOD=30*60 # 30 Minutes
+TOKEN_VALIDITY_PERIOD=60*60*24 # 24 Hours
 PRIVATE_KEY='''-----BEGIN EC PRIVATE KEY-----
 MHcCAQEEIN13TiYprZRuj+j8+B/AX7WDdv3UFc1oWqYm/YbkgPtXoAoGCCqGSM49
 AwEHoUQDQgAErLyoIuOaiTLTArey9gi3VYuAA6Z6o2KktN2C1bHwK9At0pmCLxLG
@@ -26,7 +26,7 @@ oauth2 = OAuth2AuthorizationCodeBearer(authorizationUrl='auth', tokenUrl='token'
 class User(BaseModel):
     acct: str
 
-def get_user(token: str = Depends(oauth2)):
+def get_remote_user(token: str = Depends(oauth2)):
 
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

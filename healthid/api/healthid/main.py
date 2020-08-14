@@ -5,9 +5,26 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import os
 from healthid.api import api
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title=f"HealthID standalone WebApp",
+)
+
+origins = [
+    "http://localhost:8000",
+    "http://localhost:8080",
+    "https://acme.spilikin.dev",
+    "https://appauth.acme.spilikin.dev",
+    "https://id.acme.spilikin.dev",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.mount('/api', api)

@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "api/.virtualenv/bin/python"
+    "python.pythonPath": "api/.virtualenv/bin/python",
+    "python.linting.enabled": false
 }

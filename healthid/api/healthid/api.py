@@ -1,6 +1,5 @@
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Depends, Form
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -10,44 +9,12 @@ import time
 import healthid.db as db
 import healthid.security as security
 from pydantic import BaseModel
-from uuid import uuid4
 import urllib.parse
 from enum import Enum
 import base64
 import urllib
 
 API_VERSION = '0.8.0'
-
-app = FastAPI()
-
-origins = [
-    "http://localhost:8000",
-    "http://localhost:8080",
-    "https://acme.spilikin.dev",
-    "https://appauth.acme.spilikin.dev",
-    "https://id.acme.spilikin.dev",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-class EnrollmentRequest(BaseModel):
-    acct: str
-    email: str
-    device_public_key: str
-
-class SignedEnrollmentRequest(BaseModel):
-    enrollmentData: str # base64 encoded EnrollmentRequest
-    signature: str
-
-class Account(BaseModel):
-    uuid: str
-    acct: str
-    email: str
 
 class Challenge(BaseModel):
     nonce: str
@@ -71,8 +38,6 @@ class AuthenticationCode(BaseModel):
     acct: str
     redirect_uri: str
 
-
-
 class TokenResponse(BaseModel):
     access_token: str
     
@@ -83,33 +48,15 @@ api = FastAPI(
     version=API_VERSION
 )
 
+from .routers import account
+api.include_router(account.router)
+
 @api.get('/info')
 def public_info():
     return {
         'description':'HealthID API',
         'version':f'{API_VERSION}'
     }
-
-@api.get('/acct/{acct}')
-def get_account(acct: str, user: security.User = Depends(security.get_user)):
-    matches = db.accounts.search(db.where('acct') == acct)
-    if len(matches) == 0:
-        raise HTTPException(status_code=404, detail="Account not found")
-
-    account = matches[0]
-    return account
-
-@api.post('/enroll')
-def enroll(req: EnrollmentRequest):
-    if len(db.accounts.search(db.where('acct') == req.acct)) > 0:
-        raise HTTPException(status_code=409, detail="Account already exists")
-        
-    account = Account(
-        uuid = str(uuid4()),
-        acct = req.acct,
-        email = req.email)
-    db.accounts.insert(account.dict())
-    return account
 
 @api.get('/auth/challenge')
 def get_challenge(acct: str, redirect_uri: str, remote_auth_uri : Optional[str] = None):
