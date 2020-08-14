@@ -15,12 +15,13 @@ Install Docker (optional)
 
 See the API docs under https://acme.spilikin.dev/api/docs/
 
-[source, bash]
+[source,bash]
 ----
 https acme.spilikin.dev/api/info 
 ----
 
 .Enroll using the python client
+[source,bash]
 ----
 cd healthid/cli
 source venv.sh
@@ -44,6 +45,7 @@ https "https://acme.spilikin.dev/api/acct/$ACCT" "Authorization:Bearer `./auth.p
 You will need Python 3.8 (install using apt-get oder brew install)
 
 .Start HealthID API Server
+[source,bash]
 ----
 cd healthid/api
 source venv.sh
