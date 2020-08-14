@@ -34,7 +34,7 @@ def get_remote_user(token: str = Depends(oauth2)):
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, PUBLIC_KEY)
+        payload = jwt.decode(token, PUBLIC_KEY, options={'verify_aud': False})
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception

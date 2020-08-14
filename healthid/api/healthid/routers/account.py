@@ -28,7 +28,9 @@ class SignedEnrollmentRequest(BaseModel):
     verifying_key: str # ECC verifying key in PEM format
 
 def load_account(acct: str, remote_user: User):
-    if acct == remote_user.acct:
+    print (acct)
+    print (remote_user.acct)
+    if acct != remote_user.acct:
         raise HTTPException(status_code=403, detail="Access denied")
 
     matches = db.accounts.search(db.where('acct') == acct)
@@ -36,7 +38,6 @@ def load_account(acct: str, remote_user: User):
         raise HTTPException(status_code=404, detail="Account not found")
     account = matches[0]
     return account
-
 
 @router.get('/acct/{acct}')
 def get_account(acct: str, remote_user: User = Depends(get_remote_user)):
