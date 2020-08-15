@@ -31,6 +31,10 @@ services:
   healthid:
     build:
       context: ./
+    volumes:
+      # Main config
+      - ../healthid_db:/app/.db
+
     networks:
       - backnet
   

@@ -3,3 +3,4 @@ healthid.old
 healthid/api/.virtualenv
 __pycache__
 healthid/api/.db
+healthid_db

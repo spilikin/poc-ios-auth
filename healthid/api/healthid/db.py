@@ -1,13 +1,7 @@
 from tinydb import TinyDB, where
-from os import makedirs, environ
+from os import makedirs
 makedirs('.db', exist_ok=True)
-
-if "API_ENV" in environ and environ['API_ENV'] == 'DOCKER':
-    db_location = "../healthid_db/db.json"
-else:
-    db_location = "./.db/db.json"
-
-db = TinyDB(db_location)
+db = TinyDB('.db/db.json')
 
 accounts = db.table('account')
 challenges = db.table('challenge')
