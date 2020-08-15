@@ -24,7 +24,9 @@ https acme.spilikin.dev/api/info
 [source,bash]
 ----
 cd healthid/cli
+# start the python virtual environment
 source venv.sh
+# choose your account name. it must be in email format
 ACCT=<test email address>
 # enroll 
 ./enroll.py --endpoint https://acme.spilikin.dev/api/ $ACCT
@@ -34,9 +36,9 @@ ls -alR ./accounts/
 ./auth.py --verbose --endpoint https://acme.spilikin.dev/api/ $ACCT
 # get token to ENV variable
 TOKEN=`./auth.py --endpoint https://acme.spilikin.dev/api/ $ACCT`
-
-https "https://acme.spilikin.dev/api/acct/$ACCT" "Authorization:Bearer `./auth.py $ACCT --endpoint https://acme.spilikin.dev/api/`"
+echo $TOKEN
 # access protected resource
+https "https://acme.spilikin.dev/api/acct/$ACCT" "Authorization:Bearer $TOKEN"
 
 ----
 
