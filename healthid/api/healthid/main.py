@@ -36,6 +36,10 @@ else:
 
 templates = Jinja2Templates(directory=vue_dir)
 
+@app.get('/')
+def signin(request: Request):
+    return RedirectResponse("/Account/")
+
 @app.get('/SignIn/')
 def signin(request: Request):
     return templates.TemplateResponse("SignIn.html", {"request": request})
@@ -44,12 +48,12 @@ def signin(request: Request):
 def signin_subpage(request: Request, subpage: str):
     return templates.TemplateResponse("SignIn.html", {"request": request})
 
-@app.get('/Account/{account_id}/')
-def account(request: Request, account_id: str):
+@app.get('/Account/')
+def account(request: Request):
     return templates.TemplateResponse("Account.html", {"request": request})
 
-@app.get('/Account/{account_id}/{subpath}')
-def account_subpath(request: Request, account_id: str):
+@app.get('/Account/{subpath}')
+def account_subpath(request: Request):
     return templates.TemplateResponse("Account.html", {"request": request})
 
 

@@ -61,6 +61,10 @@ resp=requests.post(
 )
 
 # we should receive the code 
+if resp.status_code != 200:
+    print(f"Error: {resp.status_code} {resp.text}")
+    exit(1)
+    
 code_response = resp.json()
 if args.verbose:
     print (json.dumps(code_response, indent=2))

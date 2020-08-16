@@ -35,7 +35,6 @@ export default class Identity extends Vue {
   mounted() {
     this.account = localStorage.getItem("account") || ""
     this.remember = localStorage.getItem("account") != null
-    console.log(this.$parent)
   }
 
   onAuthenticate() {
@@ -53,7 +52,11 @@ export default class Identity extends Vue {
     }
     url += "/api/auth/challenge"
     url += "?acct="+encodeURI(this.account)
-    url += "&redirect_uri="+encodeURI('https://acme.spilikin.dev/Account/')
+    let redirectUri = this.$route.query['redirect_uri']
+    if (redirectUri == null) {
+      redirectUri = "https://acme.spilikin.dev/Account/"
+    }
+    url += "&redirect_uri="+redirectUri
     url += "&remote_auth_uri="+encodeURI(baseURL+"/SignIn/Authenticate")
     window.location.href = url
   }

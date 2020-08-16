@@ -10,12 +10,12 @@ module.exports = {
     pages: {
         SignIn: {
             title: "HealthID Sign In",
-            entry: 'src/pages/SignIn/SignIn.ts',
+            entry: 'src/pages/SignIn/index.ts',
             template: 'templates/index.html',
         },
         Account: {
             title: "HealthID Account",
-            entry: 'src/pages/Account/Account.ts',
+            entry: 'src/pages/Account/index.ts',
             template: 'templates/index.html',
         }
     }
