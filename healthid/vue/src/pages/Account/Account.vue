@@ -15,11 +15,9 @@ import { Vue, Component } from 'vue-property-decorator'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
-import VueJsonPretty from 'vue-json-pretty'
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
-Vue.use(VueJsonPretty)
 
 @Component
 export default class App extends Vue {

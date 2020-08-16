@@ -19,8 +19,8 @@ import VueJsonPretty from 'vue-json-pretty'
   components: { VueJsonPretty }
 })
 export default class Home extends Vue {
-  acct: string
-  jwt: object
+  acct?: string;
+  jwt?: object;
 
   created() {
     this.acct = this.$store.state.securityContext.acct
