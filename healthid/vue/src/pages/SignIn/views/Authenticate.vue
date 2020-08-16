@@ -2,6 +2,8 @@
   <div class="authenticate">
       <canvas id="code"></canvas>
       <h1 class="h3 mb-3 font-weight-normal">Scan QR-Code using your Smartphone</h1>
+      <small>NONCE: {{ nonce }}</small>
+
       <div class="d-flex justify-content-center mb-3">
           <b-spinner variant="primary" label="Spinning"></b-spinner>
       </div> 
@@ -20,8 +22,11 @@ import QRCode from 'qrcode'
 @Component
 export default class Identity extends Vue {
   redirectUri = "https://acme.spilikin.dev/Account/"
+  nonce = ""
 
   mounted() {
+    this.nonce = ""+this.$route.query['nonce']
+
       if (this.$route.query['redirect_uri'] != null) {
         this.redirectUri = ""+this.$route.query['redirect_uri']
       }

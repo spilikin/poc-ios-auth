@@ -21,7 +21,7 @@ const vue = new Vue({
 
 const url = new URL(window.location.href);
 const arr = url.href.split("/");
-const redirectUri = arr[0]+'//'+arr[2]+'/Account'
+const redirectUri = arr[0]+'//'+arr[2]+'/Account/'
 
 
 new Promise<SecurityContext>((resolve, reject) => {

@@ -21,7 +21,6 @@ Vue.use(BootstrapVueIcons)
 
 @Component
 export default class App extends Vue {
-
   logout() {
     localStorage.removeItem('access_token')
   }
