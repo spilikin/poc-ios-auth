@@ -15,25 +15,14 @@ import { Vue, Component } from 'vue-property-decorator'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
-import axios from 'axios'
+import VueJsonPretty from 'vue-json-pretty'
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
+Vue.use(VueJsonPretty)
 
 @Component
 export default class App extends Vue {
-  mounted() {
-    axios.get(`/api/acct/${this.$store.state.securityContext.acct}`, {
-  headers: {
-    'Authorization': `Bearer ${this.$store.state.securityContext.token}` 
-  }})
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.error(error)
-    });
-  }
 
   logout() {
     localStorage.removeItem('access_token')

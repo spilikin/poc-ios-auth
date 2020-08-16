@@ -70,7 +70,7 @@ def enroll(req: SignedEnrollmentRequest):
         acct = enrollment_request.acct,
         email = enrollment_request.email,
         devices = [])
-    device0 = Device(verifying_key=req.verifying_key, alias="Enrollmenr device")
+    device0 = Device(verifying_key=req.verifying_key, alias="Enrollment device")
     account.devices.append(device0)
     db.accounts.insert(account.dict())
     return account

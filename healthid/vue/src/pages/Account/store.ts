@@ -7,16 +7,21 @@ export interface SecurityContext {
   token: string;
   jwt: object;
   acct: string;
+  axiosConfig: object;
 }
 
 export interface RootState {
   securityContext?: SecurityContext;
+  accountInfo?: object;
 }
 
 const store: StoreOptions<RootState> = {
   state: {
   },
-  modules: {
+  mutations: {
+    accountInfo (state: RootState, accountInfo: object) {
+      state.accountInfo = accountInfo
+    }
   }
 };
 

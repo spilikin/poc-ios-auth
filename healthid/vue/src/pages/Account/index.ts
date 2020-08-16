@@ -28,14 +28,11 @@ new Promise<SecurityContext>((resolve, reject) => {
   new Promise<string>((resolveToken, rejectToken) => {
     // TODO: OWASP says HttpOnly is better than local storage for tokens
     const token = localStorage.getItem('access_token')
+    const code = url.searchParams.get('code')
     if (typeof token === 'string') {
       resolveToken(token)
       return
-    }
-    const code = url.searchParams.get('code')
-
-    // we received code, try to fetch the token
-    if (typeof code === 'string') {
+    } else if (typeof code === 'string') {
       const data = new FormData()
   
       data.append("grant_type", "authorization_code")
@@ -69,7 +66,11 @@ new Promise<SecurityContext>((resolve, reject) => {
     resolve({
       token: token,
       jwt: jwt,
-      acct: jwt['sub']
+      acct: jwt['sub'],
+      axiosConfig: {
+        headers: {
+          'Authorization': `Bearer ${token}` 
+        }}
     })
     
   })
@@ -81,40 +82,3 @@ new Promise<SecurityContext>((resolve, reject) => {
   console.error(error)
   window.location.href="/SignIn/?redirect_uri="+encodeURI(redirectUri)
 })
-
-/*
-if (code != null) {
-  const data = new FormData()
-  
-  data.append("grant_type", "authorization_code")
-  data.append("client_id", "public_client")
-  data.append("redirect_uri", ""+url.searchParams.get('redirect_uri'))
-  data.append("code", code)
-  //"code_verifier": "none",
-
-  axios.post('/api/auth/token', data)
-  .then(response => {
-    if (typeof response.data['access_token'] !== 'string') {
-      throw Error("No token returned by the API")
-    }
-    token = response.data['access_token']
-    const jwt =  JSON.parse(atob(token.split('.')[1]))
-    
-    //const securityContext = new SecurityContext(token, jwt, jwt['sub'])
-    store.state.securityContext = {
-      token: token,
-      jwt: jwt,
-      acct: jwt['sub']
-    }
-    vue.$mount('#app')
-  })
-  .catch(error => {
-    alert(error)
-    window.location.href="/SignIn/?redirect_uri="+encodeURI(redirectUri)
-  });
-} else if (token == null) {
-    window.location.href="/SignIn/?redirect_uri="+encodeURI(redirectUri)
-} else {
-  vue.$mount('#app')
-}
-*/

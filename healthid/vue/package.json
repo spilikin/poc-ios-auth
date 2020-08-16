@@ -16,6 +16,7 @@
     "qrcode": "^1.4.4",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
+    "vue-json-pretty": "^1.6.7",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
     "vuelidate": "^0.7.5",
