@@ -41,7 +41,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           cd healthid/
-          sudo docker-compose build --nocache
+          sudo docker-compose build --no-cache
           sudo docker-compose down
           sudo docker-compose up --detach
 
