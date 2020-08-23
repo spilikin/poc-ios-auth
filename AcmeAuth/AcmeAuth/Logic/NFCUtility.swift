@@ -93,7 +93,7 @@ extension NFCUtility: NFCTagReaderSessionDelegate {
                 return
             }
             
-            // Smartcard Karate would start here here
+            // Smartcard Karate would start here
             // since it's only a PoC we just put delay here
             let apdu = NFCISO7816APDU(instructionClass: 0, instructionCode: 0, p1Parameter: 0, p2Parameter: 0, data: Data(), expectedResponseLength: 256)
             for num in 1...500 {
@@ -101,9 +101,9 @@ extension NFCUtility: NFCTagReaderSessionDelegate {
                     if let _ = err {
                         smartcard.session?.invalidate(errorMessage: "Error during smartcard Karate")
                     } else {
-                        session.alertMessage = "\(num)/500"
+                        session.alertMessage = "\(num)%"
                     }
-                    if (num == 500) {
+                    if (num == 100) {
                         session.alertMessage = "Done"
                         smartcard.session?.invalidate()
                     }

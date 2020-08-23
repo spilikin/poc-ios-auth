@@ -11,7 +11,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var appState = AppState()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-
+                
+        if let userActivity = connectionOptions.userActivities.first,
+userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+                let url = userActivity.webpageURL  {
+            appState.onOpenURL(url)
+        }
+        
         let homeView = HomeView().environmentObject(appState)
 
         if let windowScene = scene as? UIWindowScene {
@@ -20,6 +26,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             window.makeKeyAndVisible()
         }
+        
+        
     }
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
@@ -27,9 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let url = userActivity.webpageURL else {
           return
         }
-
-        appState.debugLog = url.description + "\n" + appState.debugLog
-        print(url.description)
+        appState.onOpenURL(url)
     }
 
 }

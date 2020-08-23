@@ -3,31 +3,46 @@ import Combine
 
 struct HomeView: View {
     @EnvironmentObject var appState: AppState
-    @State var showingScanner = false
-    @State var showingLogin = false
     
     func debug(_ text: String) {
         self.appState.debugLog = text + "\n" + self.appState.debugLog
     }
     
-    var body: some View {
+    @ViewBuilder var body: some View {
         NavigationView {
-            VStack(alignment: .center) {
-                scannerButton
-                readCardButton
-                visitWebButton
-                debugView
-                Spacer()
-            }
-            .navigationBarTitle(Text("Acme Companion"))
-            .navigationBarItems(trailing: settingsButton)
-            .sheet(isPresented: $showingScanner) {
-                ScannerView(showSheetView: self.$showingScanner)
+            ScrollView {
+                VStack(alignment: .center) {
+                    if (appState.settings.isEnrolled) {
+                        accountButton
+                        scannerButton
+                        readCardButton
+                        visitWebButton
+                    } else {
+                        enrollButton
+                    }
+                    debugView
+                }
+                .navigationBarTitle(Text("Acme Companion"))
+                .navigationBarItems(trailing: settingsButton)
+                .sheet(isPresented: $appState.isSpecialScreenState) {
+                    sheetView()
+                }
             }
         }
 
     }
-    
+        
+    func sheetView() -> AnyView {
+        switch appState.screenState {
+        case .scanning:
+            return AnyView(ScannerView(showSheetView: $appState.isSpecialScreenState))
+        case .authenticating:
+            return AnyView(AuthView(showSheetView: $appState.isSpecialScreenState, authRequest: appState.authRequest!))
+        case .normal:
+            return AnyView(Text(""))
+        }
+    }
+
     let nfc = NFCUtility()
     var readCardButton: some View {
         Button(action: {
@@ -41,50 +56,97 @@ struct HomeView: View {
                     .font(.largeTitle)
                     .foregroundColor(.white)
                 Text("Add Smartcard")
-
+                Spacer()
             }.padding()
                 .foregroundColor(.white)
                 .background(Color.accentColor)
-                .cornerRadius(40)
+                .cornerRadius(15)
         }
+        .padding()
 
     }
-    
-    var header: some View {
-        HStack(alignment: .center) {
-            Spacer().frame(width: 50)
-            Text("Acme Authenticator")
-                .font(.title)
-                .frame(maxWidth: .infinity)
-            settingsButton
-        }
-    }
-    
+
     var debugView: some View {
         Text(self.appState.debugLog)
             .font(Font.system(.footnote, design: .monospaced))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
     }
-    
-    var scannerButton: some View {
-        
-        Button(action: {
-            self.showingScanner.toggle()
-        }) {
-            HStack(alignment: .center) {
-                Image(systemName: "qrcode.viewfinder")
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
-                Text("Scan Login Code")
 
-            }.padding()
-                .foregroundColor(.white)
-                .background(Color.accentColor)
-                .cornerRadius(40)
-        }.sheet(isPresented: $showingScanner) {
-            ScannerView(showSheetView: self.$showingScanner)
+    var accountButton: some View {
+        VStack(alignment: .center) {
+
+            Text(appState.settings.acct)
+                .font(.title)
+                .padding()
+
+            Image(systemName: "checkmark.seal.fill")
+                .resizable()
+                .frame(width: 64, height: 64)
+                .padding()
+            HStack {
+                Spacer()
+            }
         }
+        .foregroundColor(.white)
+        .background(Color.green)
+        .cornerRadius(20)
+        .padding()
+    }
+
+    var enrollButton: some View {
+        VStack(alignment: .leading) {
+
+            Text("""
+Enroll your identity at the Identity Provider and register this device as an autentication key
+""")
+                .padding()
+                .lineLimit(3)
+
+            NavigationLink(destination: EnrollmentView()) {
+                HStack(alignment: .center) {
+                    Image(systemName: "lock.shield.fill")
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                    Text("Start enrollment")
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                }
+                .padding()
+            }
+        }
+        .foregroundColor(.white)
+        .background(Color.accentColor)
+        .cornerRadius(20)
+        .padding()
+    }
+
+    var scannerButton: some View {
+        VStack(alignment: .leading) {
+            Text("""
+Using this feature you can scan the QR code on a website to perform a remote login.U
+""")
+                .padding()
+                .lineLimit(3)
+            Button(action: {
+                appState.screenState = .scanning
+                appState.isSpecialScreenState.toggle()
+            }) {
+                HStack(alignment: .center) {
+                    Image(systemName: "qrcode.viewfinder")
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                    Text("Scan Login Code")
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                }
+                .padding()
+            }
+        }
+        .foregroundColor(.white)
+        .background(Color.accentColor)
+        .cornerRadius(20)
+        .padding()
     }
     
     var settingsButton: some View {
