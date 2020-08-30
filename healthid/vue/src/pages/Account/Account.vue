@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
+      <router-link to="/">Home</router-link>
+      <router-link to="/about">Nerdy</router-link>
       <a @click="logout" href="/Account/">Logout</a>
     </div>
     <router-view/>
@@ -37,14 +37,22 @@ export default class App extends Vue {
 }
 
 #nav {
+  color: white;
   padding: 30px;
+  background-color: rgb(37, 104, 231);;
 }
 
 #nav a {
-  font-weight: bold;
+  color:white;
+  background-color: rgb(113, 156, 235);;
+  padding: 1em;
+  margin: 0.5em;
+  border-radius: 0.5em;
 }
 
 #nav a.router-link-exact-active {
-  color: #2c3e50;
+  font-weight: bold;
+  background-color: white;
+  color: rgb(37, 104, 231);;
 }
 </style>

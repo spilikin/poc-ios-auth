@@ -6,11 +6,15 @@ from jose import jws
 import json
 from uuid import uuid4
 from typing import Optional, List
+from healthid.fhir import random_patient
+from fhirclient.models.fhirdate import FHIRDate
+from datetime import date
 
 router = APIRouter()
 
 class Device(BaseModel):
     alias: Optional[str]
+    model: Optional[str] = "Unknown"
     verifying_key: str
 
 class Account(BaseModel):
@@ -18,6 +22,9 @@ class Account(BaseModel):
     acct: str
     email: str
     devices: List[Device]
+    fhirPatientId: Optional[str]
+    name: Optional[str]
+    avatarURI: Optional[str]
 
 class EnrollmentRequest(BaseModel):
     acct: str
@@ -28,15 +35,36 @@ class SignedEnrollmentRequest(BaseModel):
     verifying_key: str # ECC verifying key in PEM format
 
 def load_account(acct: str, remote_user: User):
-    print (acct)
-    print (remote_user.acct)
     if acct != remote_user.acct:
         raise HTTPException(status_code=403, detail="Access denied")
 
     matches = db.accounts.search(db.where('acct') == acct)
     if len(matches) == 0:
         raise HTTPException(status_code=404, detail="Account not found")
-    account = matches[0]
+    account = Account(**matches[0])
+    
+
+    if account.fhirPatientId == None:
+        patient = random_patient()
+        account.name = f"{' '.join(patient.name[0].given)} {patient.name[0].family}"
+        birthDate = patient.birthDate.date
+        today = date.today()
+        age = today.year - birthDate.year - ((today.month, today.day) < (birthDate.month, birthDate.day))
+        print (age)
+        if patient.gender == 'male':
+            if age < 40:
+                account.avatarURI = "/photos/male40.jpg"
+            else: 
+                account.avatarURI = "/photos/male60.jpg"
+        else:
+            if age < 40:
+                account.avatarURI = "/photos/female40.jpg"
+            else: 
+                account.avatarURI = "/photos/female60.jpg"
+        
+        account.fhirPatientId = patient.id
+        db.accounts.update(account.dict())
+
     return account
 
 @router.get('/acct/{acct}')

@@ -1,6 +1,12 @@
 <template>
   <div class="about">
     <h1>{{this.$store.state.securityContext.acct}}</h1>
+    <h2>Token content</h2>
+    <vue-json-pretty
+      :path="'res'"
+      :data="jwt">
+    </vue-json-pretty>
+    <h2>Account information</h2>
     <vue-json-pretty
       :path="'res'"
       :data="account">
@@ -19,12 +25,14 @@ import axios from 'axios'
 })
 export default class Home extends Vue {
   accountInfo: object = {}
+  jwt?: object
 
   get account(): object {
     return this.accountInfo
   }
 
   created() {
+    this.jwt = this.$store.state.securityContext.jwt
     axios.get(`/api/acct/${this.$store.state.securityContext.acct}`, 
     this.$store.state.securityContext.axiosConfig)
     .then(response => {
@@ -45,4 +53,5 @@ export default class Home extends Vue {
   margin: auto;
     width: 50%;
 }
+
 </style>
