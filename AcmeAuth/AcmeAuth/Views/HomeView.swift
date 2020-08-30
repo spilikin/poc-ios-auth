@@ -3,7 +3,8 @@ import Combine
 
 struct HomeView: View {
     @EnvironmentObject var appState: AppState
-    
+    @State var cancellable: AnyCancellable? = nil
+
     func debug(_ text: String) {
         self.appState.debugLog = text + "\n" + self.appState.debugLog
     }
@@ -13,10 +14,21 @@ struct HomeView: View {
             ScrollView {
                 VStack(alignment: .center) {
                     if (appState.settings.isEnrolled) {
+                        if (appState.enrollmentSuccess) {
+                            VStack(alignment: .center) {
+                                    Image(systemName: "checkmark.circle")
+                                        .resizable()
+                                        .frame(width: 150, height: 150)
+                                        .foregroundColor(.green)
+                                        .padding()
+                            }
+                        }
+
                         accountButton
                         scannerButton
                         readCardButton
                         visitWebButton
+
                     } else {
                         enrollButton
                     }
@@ -33,6 +45,7 @@ struct HomeView: View {
     }
         
     func sheetView() -> AnyView {
+        
         switch appState.screenState {
         case .scanning:
             return AnyView(ScannerView(showSheetView: $appState.isSpecialScreenState))
@@ -43,13 +56,20 @@ struct HomeView: View {
         }
     }
 
-    let nfc = NFCUtility()
+    let smartcardManager = SmartcardManager()
     var readCardButton: some View {
         Button(action: {
-            nfc.pollCardInfo {
-                value in
-                print(value)
-            }
+            self.cancellable = smartcardManager.pollCardInfo()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print ("Error while using smartcard: \(error)")
+                }
+            }, receiveValue: { _ in
+            })
+
         }) {
             HStack(alignment: .center) {
                 Image(systemName: "creditcard")
@@ -74,23 +94,28 @@ struct HomeView: View {
     }
 
     var accountButton: some View {
-        VStack(alignment: .center) {
-
-            Text(appState.settings.acct)
-                .font(.title)
-                .padding()
-
-            Image(systemName: "checkmark.seal.fill")
-                .resizable()
-                .frame(width: 64, height: 64)
-                .padding()
+        VStack(alignment: .leading) {
+            Text("HealtID Account:")
+                .font(.callout)
+                .bold()
+            HStack() {
+                Image(systemName: "checkmark.seal.fill")
+                    .foregroundColor(.green)
+                TextField("", text: $appState.settings.acct)
+                    .disabled(true)
+                    .font(.callout)
+                Spacer()
+                Button(action: {
+                    UIPasteboard.general.string = appState.settings.acct
+                }) {
+                    Image(systemName: "doc.on.doc")
+                }
+                
+            }
             HStack {
                 Spacer()
             }
         }
-        .foregroundColor(.white)
-        .background(Color.green)
-        .cornerRadius(20)
         .padding()
     }
 
@@ -124,7 +149,7 @@ Enroll your identity at the Identity Provider and register this device as an aut
     var scannerButton: some View {
         VStack(alignment: .leading) {
             Text("""
-Using this feature you can scan the QR code on a website to perform a remote login.U
+Using this feature you can scan the QR code on a website to perform a remote login.
 """)
                 .padding()
                 .lineLimit(3)

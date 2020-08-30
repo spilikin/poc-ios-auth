@@ -20,7 +20,9 @@ struct AuthView: View {
             VStack() {
                 Spacer()
                 Text("Authenticate:").font(.headline)
-                Text(authRequest.redirectURI.host!).font(.largeTitle).bold()
+                // TODO: fetch App Metadata/Federation Policy
+                Text("HealthID Profile App").font(.largeTitle).bold()
+                Text("(\(authRequest.redirectURI.host!))").font(.title).bold()
                 Spacer()
                 confirmButton
                 Spacer()

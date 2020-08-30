@@ -2,21 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
-	<array>
-		<string>D2760001448000</string>
-		<string>D27600014601</string>
-		<string>D27600014606</string>
-		<string>D27600000102</string>
-		<string>A000000167455349474E</string>
-		<string>D27600006601</string>
-		<string>D27600014602</string>
-		<string>E828BD080FA000000167455349474E</string>
-		<string>E828BD080FD27600006601</string>
-		<string>D27600014603</string>
-	</array>
-	<key>NFCReaderUsageDescription</key>
-	<string>The App uses the german Healthcare Smartcards to authenticate the users</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -32,9 +17,15 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NFCReaderUsageDescription</key>
+	<string>The App uses the german Healthcare Smartcards to authenticate the users</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan login challenge using the QR Code</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Protects the authentication key used as credential to sign in into HealthID</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -64,16 +55,25 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Scan login challenge using the QR Code</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Protects the authentication key used as credential to sign in into HealthID</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+	<array>
+		<string>D2760001448000</string>
+		<string>D27600014601</string>
+		<string>D27600014606</string>
+		<string>D27600000102</string>
+		<string>A000000167455349474E</string>
+		<string>D27600006601</string>
+		<string>D27600014602</string>
+		<string>E828BD080FA000000167455349474E</string>
+		<string>E828BD080FD27600006601</string>
+		<string>D27600014603</string>
 	</array>
 </dict>
 </plist>

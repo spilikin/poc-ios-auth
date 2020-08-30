@@ -17,6 +17,7 @@ class AppState: ObservableObject {
     @Published var screenState: ScreenState = .normal
     @Published var isSpecialScreenState = false
     @Published var settings = AppSettings()
+    @Published var enrollmentSuccess = false
     
     init() {
         //onOpenURL(URL(string: "https://appauth.acme.spilikin.dev/api/auth/challenge?acct=884874@healthid.life&redirect_uri=https://acme.spilikin.dev/Account/&remote_auth_uri=https://acme.spilikin.dev/SignIn/Authenticate")!)

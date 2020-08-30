@@ -12,17 +12,13 @@ struct EnrollmentView: View {
     @State private var errorMessage = ""
     @State var cancellable: AnyCancellable? = nil
     @State var useSmartcard = false
-    @State var can = "123456"
+    @State var can = "123123"
     @State var pin = ""
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack(alignment: .leading) {
             Spacer().frame(width: 1, height: 60)
-            TextField("Account", text: $appState.settings.acct)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .font(.title)
-                .padding()
             
             Toggle(isOn: $useSmartcard) {
                 Text("Enroll using smartcard")
@@ -54,7 +50,10 @@ struct EnrollmentView: View {
     
     var enrollButton: some View {
         Button(action: {
-            cancellable =  enrollmentManager.enroll(acct: appState.settings.acct)
+
+            let publisher = useSmartcard ?  enrollmentManager.enrollWithSmartcard(acct: appState.settings.acct, can: can, pin: pin) :            enrollmentManager.enroll(acct: appState.settings.acct)
+            
+            cancellable = publisher
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { completion in
                     switch completion {
@@ -66,6 +65,10 @@ struct EnrollmentView: View {
                     }
                 }, receiveValue: { str in
                     appState.settings.isEnrolled = true
+                    appState.enrollmentSuccess = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        appState.enrollmentSuccess = false
+                    }
                     appState.debugLog = ""
                     presentationMode.wrappedValue.dismiss()
                 })

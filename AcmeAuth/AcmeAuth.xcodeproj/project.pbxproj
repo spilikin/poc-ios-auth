@@ -10,7 +10,6 @@
 		D540791A24EC2BE500635053 /* EnrollmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D540791924EC2BE500635053 /* EnrollmentView.swift */; };
 		D540791D24EC428F00635053 /* JOSESwift in Frameworks */ = {isa = PBXBuildFile; productRef = D540791C24EC428F00635053 /* JOSESwift */; };
 		D540791F24ED726000635053 /* KeyManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D540791E24ED726000635053 /* KeyManagement.swift */; };
-		D57E1C7524B641BC00591721 /* NFCUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57E1C7424B641BC00591721 /* NFCUtility.swift */; };
 		D59944D124B4CD10001723C5 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = D59944D024B4CD10001723C5 /* CodeScanner */; };
 		D5AC63A824DEA8D800B2A7D5 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AC63A724DEA8D800B2A7D5 /* AuthView.swift */; };
 		D5AC63AA24DFD2B100B2A7D5 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AC63A924DFD2B100B2A7D5 /* Auth.swift */; };
@@ -50,7 +49,6 @@
 /* Begin PBXFileReference section */
 		D540791924EC2BE500635053 /* EnrollmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrollmentView.swift; sourceTree = "<group>"; };
 		D540791E24ED726000635053 /* KeyManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManagement.swift; sourceTree = "<group>"; };
-		D57E1C7424B641BC00591721 /* NFCUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCUtility.swift; sourceTree = "<group>"; };
 		D5AC63A724DEA8D800B2A7D5 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		D5AC63A924DFD2B100B2A7D5 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		D5AC63AD24DFF80600B2A7D5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 			children = (
 				D5AC63AD24DFF80600B2A7D5 /* Settings.swift */,
 				D5CC091124B21FBA00186DE1 /* AppState.swift */,
-				D57E1C7424B641BC00591721 /* NFCUtility.swift */,
 				D5AC63A924DFD2B100B2A7D5 /* Auth.swift */,
 				D5AC63AF24E9641C00B2A7D5 /* Enrollment.swift */,
 				D540791E24ED726000635053 /* KeyManagement.swift */,
@@ -286,6 +283,7 @@
 			packageReferences = (
 				D59944CF24B4CD10001723C5 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 				D540791B24EC428F00635053 /* XCRemoteSwiftPackageReference "JOSESwift" */,
+				D59880A724F6D5B90087C57F /* XCRemoteSwiftPackageReference "ref-OpenHealthCardKit" */,
 			);
 			productRefGroup = D5CC08DE24B1FF5A00186DE1 /* Products */;
 			projectDirPath = "";
@@ -332,7 +330,6 @@
 			files = (
 				D5CC08E124B1FF5A00186DE1 /* AppDelegate.swift in Sources */,
 				D540791F24ED726000635053 /* KeyManagement.swift in Sources */,
-				D57E1C7524B641BC00591721 /* NFCUtility.swift in Sources */,
 				D5CC08E324B1FF5A00186DE1 /* SceneDelegate.swift in Sources */,
 				D5CC08E524B1FF5A00186DE1 /* HomeView.swift in Sources */,
 				D5CC091724B3807300186DE1 /* ScannerView.swift in Sources */,
@@ -512,6 +509,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = AcmeAuth/AcmeAuth.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"AcmeAuth/Preview Content\"";
 				DEVELOPMENT_TEAM = Z355VX7235;
 				ENABLE_PREVIEWS = YES;
@@ -534,6 +532,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = AcmeAuth/AcmeAuth.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"AcmeAuth/Preview Content\"";
 				DEVELOPMENT_TEAM = Z355VX7235;
 				ENABLE_PREVIEWS = YES;
@@ -682,6 +681,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.2.1;
+			};
+		};
+		D59880A724F6D5B90087C57F /* XCRemoteSwiftPackageReference "ref-OpenHealthCardKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/spilikin/ref-OpenHealthCardKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.10;
 			};
 		};
 		D59944CF24B4CD10001723C5 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {

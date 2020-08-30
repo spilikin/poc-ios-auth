@@ -6,8 +6,30 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            accountSection
-            connectorSection
+            Section(header: Text("ACCOUNT")) {
+                TextField("Account", text: $appState.settings.acct).disabled(true)
+            }
+
+            Text("KONNEKTOR").font(.headline)
+            Section(header: Text("Host")) {
+                TextField("Host", text: $appState.settings.connector.host)
+            }
+            Section(header: Text("Username")) {
+                TextField("Username", text: $appState.settings.connector.username)
+            }
+            Section(header: Text("Password")) {
+                SecureField("Password", text: $appState.settings.connector.password)
+            }
+            Section(header: Text("Mandant ID")) {
+                TextField("Mandant ID", text: $appState.settings.connector.mandantId)
+            }
+            Section(header: Text("Clientsystem ID")) {
+                TextField("Clientsystem ID", text: $appState.settings.connector.clientSystemId)
+            }
+            Section(header: Text("Workplace ID")) {
+                TextField("Workplace ID", text: $appState.settings.connector.workSpaceId)
+            }
+            
             Section {
                 Button(action: {
                     appState.settings.reset()
@@ -23,26 +45,5 @@ struct SettingsView: View {
         .navigationBarTitle(Text("Settings"))
     }
 
-    var accountSection: some View {
-        Section(header: Text("ACCOUNT")) {
-            TextField("Account", text: $appState.settings.acct).disabled(true)
-        }
-    }
-
-    var connectorSection: some View {
-    Section(header: Text("CONNECTOR")) {
-        VStack(alignment: .leading) {
-            Text("Host").font(.headline)
-            TextField("Username", text: $appState.settings.connector.host)
-            Text("Mandant ID").font(.headline)
-            TextField("Mandant ID", text: $appState.settings.connector.mandantId)
-            Text("Clientsystem ID").font(.headline)
-            TextField("Clientsystem ID", text: $appState.settings.connector.clientSystemId)
-            Text("Workplace ID").font(.headline)
-            TextField("Workplace ID", text: $appState.settings.connector.clientSystemId)
-        }
-    }
-
-    }
 }
 

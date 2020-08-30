@@ -27,7 +27,6 @@ userActivity.activityType == NSUserActivityTypeBrowsingWeb,
             window.makeKeyAndVisible()
         }
         
-        
     }
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
