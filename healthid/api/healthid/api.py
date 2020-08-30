@@ -9,9 +9,10 @@ api = FastAPI(
     version=API_VERSION
 )
 
-from .routers import account, auth
+from .routers import account, auth, patient
 api.include_router(account.router)
 api.include_router(auth.router)
+api.include_router(patient.router)
 
 class APIInfo(BaseModel):
     title: str

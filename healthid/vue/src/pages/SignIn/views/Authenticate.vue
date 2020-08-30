@@ -46,6 +46,9 @@ export default class Identity extends Vue {
         url += "&redirect_uri="+data['redirect_uri']
         window.location.href=url
       };
+      source.onerror = function() {
+        console.log("Error occured");
+      };
 
       this.$nextTick(function () {
         QRCode.toCanvas(canvas, url , function (error: Error) {

@@ -81,11 +81,13 @@ def post_signed_challenge(signed_challenge: SignedChallenge):
 
     # check the signature
     try:
+        print (account.devices[0].verifying_key)
+        print (signed_challenge.signed_nonce)
         signed_nonce = json.loads(jws.verify(signed_challenge.signed_nonce, 
             account.devices[0].verifying_key, 
             algorithms="ES256").decode("utf-8") )
-    except:
-        raise HTTPException(status_code=400, detail="Invalid signature")
+    except Exception as error:
+        raise HTTPException(status_code=400, detail=f"Invalid challenge signature: {error}")
 
     if signed_nonce['nonce'] != challenge.nonce:
         raise HTTPException(status_code=400, detail="Bad challenge")

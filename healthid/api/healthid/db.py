@@ -7,4 +7,4 @@ accounts = db.table('account')
 challenges = db.table('challenge')
 codes = db.table('codes')
 auditlog = db.table('auditlog')
-
+patients = db.table('patients')
