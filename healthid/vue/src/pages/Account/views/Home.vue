@@ -105,6 +105,6 @@ h1 {
 .account {
   text-align: left;
   margin: auto;
-  max-width: 40em;
+  max-width: 90%;
 }
 </style>
